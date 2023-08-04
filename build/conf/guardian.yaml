@@ -1,0 +1,73 @@
+common: 
+  # identity: 
+  light-kdf: false
+  datadir: "../datadir"
+  overwrite-genesis: false
+  start-block-num: 0
+  # keystore: 
+  syncmode: snap
+  garbage-collection-mode: full
+  sender-tx-hash-indexing: false
+  target-gaslimit: 4712388
+  # block-extra-data: 
+  srvtype: http
+  # rewardbase: 0
+  write-address: false
+  child-chain-indexing: false
+  kes-nodetype-service: false
+  # authorized-nodes: 
+  # gen-key-path: 
+  # scsigner: 
+
+txresend: 
+  interval: 4
+  max-count: 1000
+  use-legacy: false
+
+p2p: 
+  cypress: false
+  baobab: false
+  network-id: 8217
+  # bootnodes: ""
+  rw-timer-wait-time: 15s
+  rw-timer-interval: 1000
+  port: 32323
+  sub-port: 32324
+  multi-channel: false
+  max-connections: 10
+  max-request-content-length: 524288
+  max-pend-peers: 0
+  bn-addr: ":32323"
+  # nat: any
+  no-discover: true
+  # net-restrict: 
+  # node-key: 
+  node-key-hex: "0e4ca6d38096ad99324de0dde108587e5d7c600165ae4cd6c2462c597458c2b8"
+
+metrics-collection-reporting: 
+  enable: false
+  prometheus: false
+  prometheus-port: 61001
+
+autorestart: 
+  enable: false
+  timeout: 15m0s
+  daemon-path: ~/klaytn/bin/kcnd
+
+cache: 
+  type: 2
+  # scale: 0
+  # level: 
+  # memory: 0
+  
+ipc: 
+  disable: false
+  path: "klay.ipc"
+
+console:
+  js-path: .
+  # exec: 
+  # preload: 
+
+log:
+  format: terminal
