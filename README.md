@@ -14,4 +14,4 @@ make run
 This repository is licensed under the GNU Lesser General Public License v3.0, also included in our repository in the COPYING.LESSER file.
 
 # Contributing
-As an open source project, Klaytn always welcomes your contribution. Please read our CONTRIBUTING.md for a walk-through of the contribution process.
+As an open source project, Klaytn always welcomes your contribution.
