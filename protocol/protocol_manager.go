@@ -1,10 +1,11 @@
 package protocol
 
 import (
-	"github.com/klaytn/guardian/service"
+	"math/big"
+
+	"github.com/klaytn/guardian/protocol/service"
 	"github.com/klaytn/klaytn/common"
 	"github.com/klaytn/klaytn/networks/p2p"
-	"math/big"
 )
 
 type ProtocolManager struct {
@@ -16,15 +17,15 @@ type ProtocolManager struct {
 	services  []service.Service
 }
 
-func NewProtocolManager() *ProtocolManager {
+func NewProtocolManager(services ...service.Service) *ProtocolManager {
 	pm := &ProtocolManager{
 		peers: NewPeerSet(),
 	}
 
 	// register services
-	pm.Register(service.NewMsgHandler())
-	//pm.Register(service.NewBlockchain())
-	//pm.Register(service.NewTransacitonPool())
+	for _, service := range services {
+		pm.register(service)
+	}
 
 	pm.protocols = append(pm.protocols, p2p.Protocol{
 		Name:    "guardian",
@@ -41,7 +42,7 @@ func NewProtocolManager() *ProtocolManager {
 	return pm
 }
 
-func (pm *ProtocolManager) Register(service service.Service) {
+func (pm *ProtocolManager) register(service service.Service) {
 	pm.services = append(pm.services, service)
 }
 

@@ -21,9 +21,12 @@
 package node
 
 import (
-	"github.com/klaytn/guardian/protocol"
 	"net"
 	"sync"
+
+	"github.com/klaytn/guardian/blockchain"
+	"github.com/klaytn/guardian/protocol"
+	"github.com/klaytn/guardian/txpool"
 
 	"github.com/klaytn/klaytn/log"
 	"github.com/klaytn/klaytn/networks/p2p"
@@ -101,7 +104,13 @@ func (n *Node) Start() error {
 	n.server = p2p.NewServer(n.config.serverConfig)
 	n.logger.Info("Starting peer-to-peer node", "instance", n.config.serverConfig.Name)
 
-	n.protocolManager = protocol.NewProtocolManager()
+	// protocol manager with services
+	n.protocolManager = protocol.NewProtocolManager(
+		blockchain.NewBlockchain(),
+		txpool.NewTxPool(),
+	)
+
+	// inject protocols into p2p server
 	if len(n.protocolManager.Protocols()) > 0 {
 		n.server.AddProtocols(n.protocolManager.Protocols())
 	}
