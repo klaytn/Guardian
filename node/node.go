@@ -24,6 +24,10 @@ import (
 	"net"
 	"sync"
 
+	"github.com/klaytn/guardian/blockchain"
+	"github.com/klaytn/guardian/protocol"
+	"github.com/klaytn/guardian/txpool"
+
 	"github.com/klaytn/klaytn/log"
 	"github.com/klaytn/klaytn/networks/p2p"
 	"github.com/klaytn/klaytn/networks/p2p/nat"
@@ -37,7 +41,8 @@ var logger = log.NewModuleLogger(log.Node)
 type Node struct {
 	config *GuardianConfig
 
-	server p2p.Server
+	server          p2p.Server
+	protocolManager *protocol.ProtocolManager
 
 	rpcAPIs       []rpc.API
 	inprocHandler *rpc.Server // In-process RPC request handler to process the API requests
@@ -99,8 +104,23 @@ func (n *Node) Start() error {
 	n.server = p2p.NewServer(n.config.serverConfig)
 	n.logger.Info("Starting peer-to-peer node", "instance", n.config.serverConfig.Name)
 
+	// protocol manager with services
+	n.protocolManager = protocol.NewProtocolManager(
+		blockchain.NewBlockchain(),
+		txpool.NewTxPool(),
+	)
+
+	// inject protocols into p2p server
+	if len(n.protocolManager.Protocols()) > 0 {
+		n.server.AddProtocols(n.protocolManager.Protocols())
+	}
+
 	if err := n.server.Start(); err != nil {
 		return convertFileLockError(err)
+	}
+
+	if err := n.protocolManager.Start(); err != nil {
+		return err
 	}
 
 	n.appendAPIs(n.APIs())
@@ -192,6 +212,10 @@ func (n *Node) stopIPC() {
 func (n *Node) Stop() error {
 	n.lock.Lock()
 	defer n.lock.Unlock()
+
+	if err := n.protocolManager.Stop(); err != nil {
+		logger.Error("Failed to stop protocol manager", "err", err)
+	}
 
 	// Terminate the API, services and the p2p server.
 	n.stopIPC()

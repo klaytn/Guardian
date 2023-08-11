@@ -1,5 +1,8 @@
 # vscode
 .vscode
 
+# IDE
+.idea
+
 # bin
 */bin
