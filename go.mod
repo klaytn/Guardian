@@ -2,7 +2,7 @@ module github.com/klaytn/guardian
 
 go 1.18
 
-require github.com/klaytn/klaytn v1.11.0-rc.1
+require github.com/klaytn/klaytn v1.11.0-rc.3
 
 require (
 	github.com/AndreasBriese/bbloom v0.0.0-20190306092124-e2d15f34fcf9 // indirect
@@ -77,7 +77,7 @@ require (
 	github.com/robertkrimen/otto v0.0.0-20180506084358-03d472dc43ab // indirect
 	github.com/rs/cors v1.7.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/satori/go.uuid v1.2.0 // indirect
+	github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b // indirect
 	github.com/steakknife/bloomfilter v0.0.0-20180922174646-6819c0d2a570 // indirect
 	github.com/steakknife/hamming v0.0.0-20180906055917-c99c65617cd3 // indirect
 	github.com/stretchr/objx v0.5.0 // indirect
